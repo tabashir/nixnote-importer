@@ -1,0 +1,38 @@
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+
+====== Baremetal Script Release ======
+
+@OnDemand
+@Scrum_of_Scrums
+@TODO
+@Release
+
+
+thunderlink://messageid=713D2B88C575C74CA4505133F892B57644ACFFF3@EXMBXPOR01.corp.peer1.net
+
+
+
+    Cheers,
+    --
+    Jez McKinley
+    Dev Manager
+'''
+
+'''
+    "Sometimes, the only choices you have are bad ones, but you still have
+    to choose." - The Twelfth Doctor
+'''
+
+'''
+    Tel: +44(0)2380 926142 (Internal ext 416142)
+    Mobile: +44(0)777 888 2667
+    Twitter: @jezmckinley
+'''
+
+'''
+    Cogeco Peer1
+    30/31 Town Quay, Southampton, SO14 2AQ
+    http://www.cogecopeer1.com
+'''
+
