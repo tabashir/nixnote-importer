@@ -19,7 +19,7 @@ public class ZimNoteTest {
 	@Test
 	public void willThrowInvalidNoteExceptionIfFileDoesNotExist() {
 		try {
-			ZimNote unit = new ZimNote(getResourcesDir() + "/non_existent_file.txt");
+			new ZimNote(getResourcesDir() + "/non_existent_file.txt");
 		} catch (InvalidNoteException exception) {
 			assertThat(exception.getMessage(), is("cannot load note"));
 		}
