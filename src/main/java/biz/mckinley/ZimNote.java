@@ -9,7 +9,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
 
 public class ZimNote {
@@ -50,8 +53,10 @@ public class ZimNote {
 
 	public List<String> getAttachmentFilenames() {
 		File attachmentFolder = new File(StringUtils.substringBeforeLast(filename, ".txt"));
-		List<String> filenames = new ArrayList<String>();
+		List<String> attachments = new ArrayList<String>();
+
 		if (attachmentFolder.isDirectory()) {
+			Collection<File> subnotes = FileUtils.listFilesAndDirs(attachmentFolder, new SuffixFileFilter(".txt"), TrueFileFilter.TRUE);
 			IOFileFilter fileFilter = new IOFileFilter() {
 				
 				public boolean accept(File dir, String name) {
@@ -59,17 +64,22 @@ public class ZimNote {
 				}
 				
 				public boolean accept(File file) {
+					if (file.getName().endsWith(".txt")) {
+						return false;
+					}
 					return true;
 				}
 				
 			};
-			Collection<File> attachments = FileUtils.listFiles(attachmentFolder, fileFilter, null);
+			Collection<File> subfiles = FileUtils.listFiles(attachmentFolder, fileFilter, TrueFileFilter.TRUE);
+
+//			Collection<File> subfiles = FileUtils.listFiles(attachmentFolder, fileFilter, null);
 			
-			for (File file : attachments) {
-				filenames.add(file.getAbsolutePath());
+			for (File file : subfiles) {
+				attachments.add(file.getAbsolutePath());
 			}
 		}
-		return filenames;
+		return attachments;
 	}
 
 	public String getTitle() {
