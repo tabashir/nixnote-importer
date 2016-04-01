@@ -3,17 +3,20 @@ package biz.mckinley;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.FalseFileFilter;
-import org.apache.commons.io.filefilter.IOFileFilter;
-import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.FileSystemManager;
+import org.apache.commons.vfs2.FileType;
+import org.apache.commons.vfs2.VFS;
 
 public class ZimNote {
 	private final String filename;
@@ -37,12 +40,12 @@ public class ZimNote {
 		return bodyText;
 	}
 
-	public List<String> getTags() {
+	public Set<String> getTags() {
 		return calculateTagsFromBody(bodyText);
 	}
 
-	public List<String> calculateTagsFromBody(String body) {
-		List<String> tags = new ArrayList<String>();
+	public Set<String> calculateTagsFromBody(String body) {
+		Set<String> tags = new HashSet<String>();
 		Pattern pattern = Pattern.compile("\\B@([a-zA-Z_0-9]+)");
 		Matcher matcher = pattern.matcher(body);
 		while (matcher.find()) {
@@ -51,35 +54,75 @@ public class ZimNote {
 		return tags;
 	}
 
-	public List<String> getAttachmentFilenames() {
-		File attachmentFolder = new File(StringUtils.substringBeforeLast(filename, ".txt"));
-		List<String> attachments = new ArrayList<String>();
+	public Set<String> getAttachmentFilenames() {
+		Set<String> attachments = new HashSet<String>();
+		File attachmentFolder = getAttachmentFolderForFile(filename);
 
 		if (attachmentFolder.isDirectory()) {
-			Collection<File> subnotes = FileUtils.listFilesAndDirs(attachmentFolder, new SuffixFileFilter(".txt"), TrueFileFilter.TRUE);
-			IOFileFilter fileFilter = new IOFileFilter() {
-				
-				public boolean accept(File dir, String name) {
-					return false;
+			try {
+				FileSystemManager fsManager = VFS.getManager();
+				FileObject fileObject = fsManager.resolveFile(attachmentFolder.getAbsolutePath());
+				HashSet<FileObject> attachedFileObjects = new HashSet<FileObject>(Arrays.asList(fileObject.getChildren()));
+				Set<FileObject> attachedFiles = filterNotes(attachedFileObjects);
+				Set<FileObject> attachedNotes = findSubNotes(attachedFileObjects);
+				Set<File> subNoteAttachmentFolderNames = new HashSet<>();
+				for (FileObject subNote : attachedNotes) {
+					subNoteAttachmentFolderNames.add(getAttachmentFolderForFile(getFileNameforEntry(subNote)));
 				}
-				
-				public boolean accept(File file) {
-					if (file.getName().endsWith(".txt")) {
-						return false;
-					}
-					return true;
-				}
-				
-			};
-			Collection<File> subfiles = FileUtils.listFiles(attachmentFolder, fileFilter, TrueFileFilter.TRUE);
 
-//			Collection<File> subfiles = FileUtils.listFiles(attachmentFolder, fileFilter, null);
-			
-			for (File file : subfiles) {
-				attachments.add(file.getAbsolutePath());
+				for (FileObject entry : attachedFiles) {
+					if (entry.getType().equals(FileType.FOLDER)) {
+						if (!subNoteAttachmentFolderNames.contains(getAttachmentFolderForFile(getFileNameforEntry(entry)))) {
+							FileObject[] subChildren = entry.getChildren();
+							for (FileObject subChild : subChildren) {
+								if (FileType.FILE.equals(subChild.getType())) {
+									attachments.add(getFileNameforEntry(subChild));
+								}
+							}
+						}
+
+					} else {
+						attachments.add(getFileNameforEntry(entry));
+					}
+				}
+
+			} catch (FileSystemException e) {
+				e.printStackTrace();
 			}
 		}
+
 		return attachments;
+
+	}
+
+	private Set<FileObject> filterNotes(Set<FileObject> files) {
+		Set<FileObject> nonNotes = new HashSet<FileObject>();
+		for (FileObject fileEntry : files) {
+			String fileEntryName = getFileNameforEntry(fileEntry);
+			if (!fileEntryName.endsWith(".txt")) {
+				nonNotes.add(fileEntry);
+			}
+		}
+		return nonNotes;
+	}
+
+	private Set<FileObject> findSubNotes(Set<FileObject> files) {
+		Set<FileObject> notes = new HashSet<FileObject>();
+		for (FileObject fileEntry : files) {
+			String fileEntryName = getFileNameforEntry(fileEntry);
+			if (fileEntryName.endsWith(".txt")) {
+				notes.add(fileEntry);
+			}
+		}
+		return notes;
+	}
+
+	private String getFileNameforEntry(FileObject entry) {
+		return StringUtils.removeStart(String.valueOf(entry.getName()), "file://");
+	}
+
+	private File getAttachmentFolderForFile(String filename) {
+		return new File(StringUtils.substringBeforeLast(filename, ".txt"));
 	}
 
 	public String getTitle() {
@@ -102,15 +145,13 @@ public class ZimNote {
 	private String makeArg(String name, String value) {
 		return "--" + name + "='" + value + "'";
 	}
-	
-	private List<String> makeArg(String name, List<String> values) {
-		List<String> args = new ArrayList<String>();
+
+	private Set<String> makeArg(String name, Set<String> values) {
+		Set<String> args = new HashSet<String>();
 		for (String value : values) {
 			args.add(makeArg(name, value));
 		}
 		return args;
 	}
-	
-	
 
 }
