@@ -37,8 +37,10 @@ public class ZimNoteTest extends BaseImporterTest {
 		expected.add("--attachment='" + attachmentFolder + "Attachment_2.att'");
 		expected.add("--tag='TODO'");
 		expected.add("--tag='Tagme'");
+		expected.add("--notebook='somewhere'");
+
 		
-		assertThat(unit.getExportArgs(), is(equalTo(expected)));
+		assertThat(unit.getExportArgs("somewhere"), is(equalTo(expected)));
 	}
 
 }

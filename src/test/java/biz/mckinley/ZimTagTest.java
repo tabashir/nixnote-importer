@@ -61,5 +61,6 @@ public class ZimTagTest extends BaseImporterTest {
 		ZimNote unit = new ZimNote(getResourcesDir() + "/Baremetal_Script_Release.txt");
 		assertThat(unit.getTags(), is(equalTo(new HashSet<String> (Arrays.asList("OnDemand", "Scrum_of_Scrums","TODO","Release", "jezmckinley")))));
 	}
+	
 
 }

@@ -132,8 +132,9 @@ public class ZimNote {
 		return StringUtils.substringBefore(StringUtils.replace(StringUtils.substringAfterLast(filename, "/"), "_", " "), ".txt");
 	}
 
-	public Set<String> getExportArgs() {
+	public Set<String> getExportArgs(String notebook) {
 		Set<String> exportArgs = new HashSet<String>();
+		exportArgs.add(makeArg("notebook", notebook));
 		exportArgs.add(makeArg("title", getTitle()));
 		exportArgs.addAll(makeArg("attachment", getAttachmentFilenames()));
 		exportArgs.addAll(makeArg("tag", getTags()));
