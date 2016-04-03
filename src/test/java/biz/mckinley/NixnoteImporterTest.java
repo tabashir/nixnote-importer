@@ -2,7 +2,7 @@ package biz.mckinley;
 
 import org.junit.Test;
 
-public class NixnoteImporterTest {
+public class NixnoteImporterTest extends BaseImporterTest {
 
 	@Test
 	public void test() {

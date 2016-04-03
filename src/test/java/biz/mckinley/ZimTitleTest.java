@@ -6,12 +6,8 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-public class ZimTitleTest {
+public class ZimTitleTest extends BaseImporterTest {
 
-	private String getResourcesDir() {
-	    return System.getProperty("user.dir") + "/src/test/resources";
-	}
-	
 	@Test
 	public void extractZimTitle() throws Exception {
 		ZimNote unit = new ZimNote(getResourcesDir() + "/Baremetal_Script_Release.txt");

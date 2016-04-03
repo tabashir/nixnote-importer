@@ -5,16 +5,12 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 
-public class ZimNoteTest {
-
-	private String getResourcesDir() {
-	    return System.getProperty("user.dir") + "/src/test/resources";
-	}
+public class ZimNoteTest extends BaseImporterTest {
 
 	@Test
 	public void willThrowInvalidNoteExceptionIfFileDoesNotExist() {
@@ -34,8 +30,8 @@ public class ZimNoteTest {
 	@Test
 	public void getExportArgs() throws Exception {
 		ZimNote unit = new ZimNote(getResourcesDir() + "/File_With_Attachments.txt");
-		List<String> expected = new ArrayList<String>();
 		String attachmentFolder = getResourcesDir() + "/File_With_Attachments/";
+		Set<String> expected = new HashSet<>();
 		expected.add("--title='File With Attachments'");
 		expected.add("--attachment='" + attachmentFolder + "Attachment_1.att'");
 		expected.add("--attachment='" + attachmentFolder + "Attachment_2.att'");
@@ -44,9 +40,5 @@ public class ZimNoteTest {
 		
 		assertThat(unit.getExportArgs(), is(equalTo(expected)));
 	}
-		
-//	String[] args1 = {"c:/Python27/python", "../feedvalidator/feedvalidator/src/demo.py" };
-//	Runtime r = Runtime.getRuntime();
-//	Process p = r.exec(args1);
 
 }

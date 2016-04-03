@@ -2,10 +2,8 @@ package biz.mckinley;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -134,8 +132,8 @@ public class ZimNote {
 		return StringUtils.substringBefore(StringUtils.replace(StringUtils.substringAfterLast(filename, "/"), "_", " "), ".txt");
 	}
 
-	public List<String> getExportArgs() {
-		List<String> exportArgs = new ArrayList<String>();
+	public Set<String> getExportArgs() {
+		Set<String> exportArgs = new HashSet<String>();
 		exportArgs.add(makeArg("title", getTitle()));
 		exportArgs.addAll(makeArg("attachment", getAttachmentFilenames()));
 		exportArgs.addAll(makeArg("tag", getTags()));

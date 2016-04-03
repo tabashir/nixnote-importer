@@ -9,11 +9,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
-public class ZimAttachmentsTest {
-
-	private String getResourcesDir() {
-	    return System.getProperty("user.dir") + "/src/test/resources";
-	}
+public class ZimAttachmentsTest extends BaseImporterTest {
 
 	@Test
 	public void withNoExistingAttachments() throws Exception {

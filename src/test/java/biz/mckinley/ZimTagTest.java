@@ -5,21 +5,18 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 import org.junit.Test;
 
-public class ZimTagTest {
-
-	private String getResourcesDir() {
-	    return System.getProperty("user.dir") + "/src/test/resources";
-	}
+public class ZimTagTest extends BaseImporterTest {
 
 	@Test
 	public void tagDetectionSingleLine() throws Exception {
 		ZimNote unit = new ZimNote(getResourcesDir() + "/Baremetal_Script_Release.txt");
 		StringBuilder bodyText = new StringBuilder();
 		bodyText.append("@mytag");
-		assertThat(unit.calculateTagsFromBody(bodyText.toString()), is(equalTo(Arrays.asList("mytag"))));
+		assertThat(unit.calculateTagsFromBody(bodyText.toString()), is(equalTo(new HashSet<String> (Arrays.asList("mytag")))));
 	}
 	
 	@Test
@@ -27,7 +24,7 @@ public class ZimTagTest {
 		ZimNote unit = new ZimNote(getResourcesDir() + "/Baremetal_Script_Release.txt");
 		StringBuilder bodyText = new StringBuilder();
 		bodyText.append("@mytag ");
-		assertThat(unit.calculateTagsFromBody(bodyText.toString()), is(equalTo(Arrays.asList("mytag"))));
+		assertThat(unit.calculateTagsFromBody(bodyText.toString()), is(equalTo(new HashSet<String> (Arrays.asList("mytag")))));
 	}
 	
 	@Test
@@ -35,7 +32,7 @@ public class ZimTagTest {
 		ZimNote unit = new ZimNote(getResourcesDir() + "/Baremetal_Script_Release.txt");
 		StringBuilder bodyText = new StringBuilder();
 		bodyText.append("@mytag @anothertag");
-		assertThat(unit.calculateTagsFromBody(bodyText.toString()), is(equalTo(Arrays.asList("mytag", "anothertag"))));
+		assertThat(unit.calculateTagsFromBody(bodyText.toString()), is(equalTo(new HashSet<String> (Arrays.asList("mytag", "anothertag")))));
 	}
 	
 	@Test
@@ -48,7 +45,7 @@ public class ZimTagTest {
 		bodyText.append("\n");
 		bodyText.append("@differentLine");
 
-		assertThat(unit.calculateTagsFromBody(bodyText.toString()), is(equalTo(Arrays.asList("mytag", "anothertag", "differentLine"))));
+		assertThat(unit.calculateTagsFromBody(bodyText.toString()), is(equalTo(new HashSet<String> (Arrays.asList("mytag", "anothertag", "differentLine")))));
 	}
 	
 	@Test
@@ -62,7 +59,7 @@ public class ZimTagTest {
 	@Test
 	public void getTagsCalculatesFromLoadedTextBody() throws Exception {
 		ZimNote unit = new ZimNote(getResourcesDir() + "/Baremetal_Script_Release.txt");
-		assertThat(unit.getTags(), is(equalTo(Arrays.asList("OnDemand", "Scrum_of_Scrums","TODO","Release", "jezmckinley"))));
+		assertThat(unit.getTags(), is(equalTo(new HashSet<String> (Arrays.asList("OnDemand", "Scrum_of_Scrums","TODO","Release", "jezmckinley")))));
 	}
 
 }
