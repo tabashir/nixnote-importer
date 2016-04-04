@@ -138,6 +138,7 @@ public class ZimNote {
 		exportArgs.add(makeArg("title", getTitle()));
 		exportArgs.addAll(makeArg("attachment", getAttachmentFilenames()));
 		exportArgs.addAll(makeArg("tag", getTags()));
+		exportArgs.add(makeArg("noteText", getBodyText()));
 		return exportArgs;
 	}
 

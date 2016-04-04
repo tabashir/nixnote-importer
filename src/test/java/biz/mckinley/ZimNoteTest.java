@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
+import org.omg.CosNaming.NamingContextPackage.NotEmpty;
 
 public class ZimNoteTest extends BaseImporterTest {
 
@@ -37,6 +38,7 @@ public class ZimNoteTest extends BaseImporterTest {
 		expected.add("--attachment='" + attachmentFolder + "Attachment_2.att'");
 		expected.add("--tag='TODO'");
 		expected.add("--tag='Tagme'");
+		expected.add("--noteText='"+ unit.getBodyText() + "'");
 		expected.add("--notebook='somewhere'");
 
 		
