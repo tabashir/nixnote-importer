@@ -148,12 +148,12 @@ public class ZimNote {
 		return exportArgs;
 	}
 
-	public int exportToNixNote(String notebook, int accountId) {
+	public int exportToNixNote(String notebook, String accountId) {
 		Executor executor = new DefaultExecutor();
 
 		CommandLine cmdLine = new CommandLine("nixnote2");
 		cmdLine.addArgument("addNote");
-		cmdLine.addArgument("--accountId=" + String.valueOf(accountId));
+		cmdLine.addArgument("--accountId=" + accountId);
 		for (String cmdArg : getExportArgs(notebook)) {
 			cmdLine.addArgument(cmdArg, false);
 		}

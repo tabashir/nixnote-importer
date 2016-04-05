@@ -14,12 +14,13 @@ public class NixnoteImporter {
 
 	private final Set<ZimNote> notes;
 	private final String notebook;
+	private final String accountId;
 
 	public static void main(String[] args) throws Exception {
-		if (args.length < 2) {
+		if (args.length < 3) {
 			System.out.println("Usage - specify both the notebook folder and nixnote notebook");
 		} else {
-			NixnoteImporter importer = new NixnoteImporter(args[0], args[1]);
+			NixnoteImporter importer = new NixnoteImporter(args[0], args[1], args[2]);
 			importer.importNotes();
 		}
 	}
@@ -29,13 +30,13 @@ public class NixnoteImporter {
 
 		for (ZimNote note : notes) {
 			System.out.println("* " + note.getFilename());
-			note.exportToNixNote(notebook, 3);
+			note.exportToNixNote(notebook, accountId);
 		}
 		System.out.println("Finished.");
 
 	}
 
-	public NixnoteImporter(String baseDir, String notebook) {
+	public NixnoteImporter(String baseDir, String notebook, String accountId) {
 		if (Strings.isNullOrEmpty(baseDir)) {
 			throw new RuntimeException("You need to specify the Zim notebook base folder");
 		}
@@ -44,6 +45,7 @@ public class NixnoteImporter {
 			throw new RuntimeException("You need to specify the Evernote notebook to import to");
 		}
 		this.notebook = notebook;
+		this.accountId = accountId;
 
 		Set<ZimNote> zimNotes = new HashSet<>();
 		Collection<File> textFiles = FileUtils.listFiles(new File(baseDir), new String[] { "txt" }, true);
