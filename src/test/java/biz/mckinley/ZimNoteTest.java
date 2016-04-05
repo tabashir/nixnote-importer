@@ -33,13 +33,12 @@ public class ZimNoteTest extends BaseImporterTest {
 		ZimNote unit = new ZimNote(getResourcesDir() + "/File_With_Attachments.txt");
 		String attachmentFolder = getResourcesDir() + "/File_With_Attachments/";
 		Set<String> expected = new HashSet<>();
-		expected.add("--title='File With Attachments'");
-		expected.add("--attachment='" + attachmentFolder + "Attachment_1.att'");
-		expected.add("--attachment='" + attachmentFolder + "Attachment_2.att'");
-		expected.add("--tag='TODO'");
-		expected.add("--tag='Tagme'");
-		expected.add("--noteText='"+ unit.getBodyText() + "'");
-		expected.add("--notebook='somewhere'");
+		expected.add("--title=File With Attachments");
+		expected.add("--attachment=" + attachmentFolder + "Attachment_1.att");
+		expected.add("--attachment=" + attachmentFolder + "Attachment_2.att");
+		expected.add("--tag=TODO");
+		expected.add("--tag=Tagme");
+		expected.add("--notebook=somewhere");
 
 		
 		assertThat(unit.getExportArgs("somewhere"), is(equalTo(expected)));

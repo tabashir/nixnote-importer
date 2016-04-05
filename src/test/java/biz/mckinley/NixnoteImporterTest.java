@@ -14,7 +14,7 @@ public class NixnoteImporterTest extends BaseImporterTest {
 
 	@Test
 	public void importerGathersTextFiles() throws Exception {
-		NixnoteImporter unit = new NixnoteImporter(getResourcesDir(), "dontcare");
+		NixnoteImporter unit = new NixnoteImporter(getResourcesDir(), "dontcare", "42");
 		Set<String> expected = new HashSet<>();
 		expected.add(getResourcesDir() + "/Baremetal_Script_Release.txt");
 		expected.add(getResourcesDir() + "/File_With_Attachments.txt");
@@ -39,7 +39,7 @@ public class NixnoteImporterTest extends BaseImporterTest {
 	@Test
 	public void importerNeedsBaseFolder() throws Exception {
 		try {
-			new NixnoteImporter(null, "dontcare");
+			new NixnoteImporter(null, "dontcare", "42");
 			fail("should have thrown runtime exception");
 		} catch (Exception exc) {
 			assertThat(exc.getMessage(), is(equalTo("You need to specify the Zim notebook base folder")));
@@ -50,7 +50,7 @@ public class NixnoteImporterTest extends BaseImporterTest {
 	@Test
 	public void importerNeedsNotebook() throws Exception {
 		try {
-			new NixnoteImporter(getResourcesDir(), null);
+			new NixnoteImporter(getResourcesDir(), null, "42");
 			fail("should have thrown runtime exception");
 		} catch (Exception exc) {
 			assertThat(exc.getMessage(), is(equalTo("You need to specify the Evernote notebook to import to")));
