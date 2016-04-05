@@ -1,6 +1,8 @@
 package biz.mckinley;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -8,7 +10,12 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.Executor;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs2.FileObject;
 import org.apache.commons.vfs2.FileSystemException;
@@ -138,12 +145,43 @@ public class ZimNote {
 		exportArgs.add(makeArg("title", getTitle()));
 		exportArgs.addAll(makeArg("attachment", getAttachmentFilenames()));
 		exportArgs.addAll(makeArg("tag", getTags()));
-		exportArgs.add(makeArg("noteText", getBodyText()));
 		return exportArgs;
 	}
 
+	public int exportToNixNote(String notebook, int accountId) {
+		Executor executor = new DefaultExecutor();
+
+		CommandLine cmdLine = new CommandLine("nixnote2");
+		cmdLine.addArgument("addNote");
+		cmdLine.addArgument("--accountId=" + String.valueOf(accountId));
+		for (String cmdArg : getExportArgs(notebook)) {
+			cmdLine.addArgument(cmdArg, false);
+		}
+
+		int result = 0;
+		try {
+			FileInputStream input;
+			input = new FileInputStream(getFilename());
+			ByteArrayOutputStream output = new ByteArrayOutputStream();
+			executor.setStreamHandler(new PumpStreamHandler(output, null, input));
+
+			try {
+				result = executor.execute(cmdLine);
+			} catch (IOException e) {
+				if (result != 0) {
+					System.out.println("ERR Result: " + result);
+					e.printStackTrace();
+				}
+			}
+		} catch (FileNotFoundException e1) {
+		}
+
+		return result;
+	}
+
 	private String makeArg(String name, String value) {
-		return "--" + name + "='" + value + "'";
+		return "--" + name + "=" + value;
+
 	}
 
 	private Set<String> makeArg(String name, Set<String> values) {

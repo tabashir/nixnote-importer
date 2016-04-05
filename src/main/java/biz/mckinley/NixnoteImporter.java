@@ -1,7 +1,7 @@
 package biz.mckinley;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,14 +24,12 @@ public class NixnoteImporter {
 		}
 	}
 
-	private void importNotes() throws Exception {
+	public void importNotes() throws FileNotFoundException {
 		System.out.println("Starting....");
+
 		for (ZimNote note : notes) {
-			ArrayList<String> cmd = new ArrayList<>();
-			cmd.add("nixnote");
-			cmd.addAll(note.getExportArgs(notebook));
-			ProcessBuilder pb = new ProcessBuilder(cmd);
-			Process p = pb.start();
+			System.out.println("* " + note.getFilename());
+			note.exportToNixNote(notebook, 3);
 		}
 		System.out.println("Finished.");
 
