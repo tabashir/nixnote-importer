@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE NixNote-Export>
+<nixnote-export version="2" exportType="export" application="NixNote" applicationVersion="2.x">
+    <Note>
+        <Guid>89022bb4-7c19-4c79-a53e-3a245fcaf2af</Guid>
+        <Title>Glip3</Title>
+        <Content><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-note SYSTEM 'http://xml.evernote.com/pub/enml2.dtd'><en-note>
+Content-Type: text/x-zim-wiki<br/>
+Wiki-Format: zim 0.4<br/>
+Creation-Date: 2016-02-11T10:19:03+00:00<br/>
+<br/>
+====== Glip ======<br/>
+Created Thursday 11 February 2016<br/>
+<br/>
+Integrated calendar<br/>
+Daily standups etc - post in group chat<br/>
+Find and filter links<br/>
+Find and filter notes<br/>
+Assign tasks<br/>
+<br/>
+<br/>
+
+
+</en-note>]]></Content>
+        <ContentHash>b1993b0e510e077cb5301ca1f96e6931</ContentHash>
+        <ContentLength>462</ContentLength>
+        <Active>true</Active>
+        <Tag>
+            <Guid>da4c81cc-785b-4926-9a07-a0a4454fb51c</Guid>
+            <Name>1-now</Name>
+        </Tag>
+        <Tag>
+            <Guid>43251dc9-1385-4a9b-8271-ce96ced92d59</Guid>
+            <Name>@development_monthly</Name>
+        </Tag>
+        <Tag>
+            <Guid>bd904d62-3096-4dfe-827c-94e57439a5b3</Guid>
+            <Name>@JP-Aaron_Sync</Name>
+        </Tag>
+        <Dirty>true</Dirty>
+    </Note>
+</nixnote-export>
